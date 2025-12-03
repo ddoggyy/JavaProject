@@ -1,0 +1,192 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.event.*;
+
+class Store {
+	private String name;
+	private int localOrder;
+	public static int totalOrder;
+	
+	public Store(String name) {
+		this.name = name;
+		localOrder = 0;
+	}
+	void addOrder() {
+		localOrder++;
+		totalOrder++;
+	}
+	void cancelOrder() {
+		if(localOrder > 0) { 
+			localOrder--; 
+			totalOrder--;
+		}
+	}
+	String getName() {
+		return name;
+	}
+	int getLocalOrder() {
+		return localOrder;
+	}
+}
+
+public class DeliveryManagerFrame extends JFrame {
+
+	private String[] restaurantList = {"치킨집", "피자가게", "중국집", "햄버거집", "카페"};
+	private String[] optionList = {"곱빼기", "사리 추가", "음료 추가"};
+	private String[] chooseDeliveryTypeList = {"일반 배송", "빠른 배송", "긴급 배송"};
+	
+	private JComboBox<String> chooseList = new JComboBox<String>(restaurantList);
+	private JCheckBox[] chooseOption = new JCheckBox[3];
+	private JRadioButton[] chooseDeliveryType = new JRadioButton[3];
+	
+	JLabel selectedListLabel = new JLabel("가게 이름: " + restaurantList[0]);
+	JLabel localOrderQty = new JLabel("가게 주문 수: 1건");
+	Store[] store;
+	
+	private boolean isSelected1;
+	private boolean isSelected2;
+	private boolean isSelected3;
+	
+	private String prior = "";
+	
+	public DeliveryManagerFrame() {
+		setTitle("DeliveryManagerFrame");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Container c = getContentPane();
+		c.setLayout(new BorderLayout());
+		
+		// 
+		store = new Store[restaurantList.length];
+		for(int i=0; i<restaurantList.length; i++) {
+			store[i] = new Store(restaurantList[i]);
+		}
+	
+		// 타이틀
+		JLabel titleLabel = new JLabel("음식 배달 주문 수 통합 관리 시스템", SwingConstants.CENTER);
+		titleLabel.setForeground(Color.BLUE);
+		titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+		
+		// 왼쪽 영역
+		JPanel choosePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		choosePanel.setBorder(BorderFactory.createTitledBorder("음식점 선택"));
+		choosePanel.add(chooseList);
+		chooseList.addActionListener(new chooseListener());
+		
+		// 가운데 영역
+		JPanel infoPanel = new JPanel(new GridLayout(7, 1));
+		infoPanel.setBorder(BorderFactory.createTitledBorder("가게 상세/주문"));
+		
+		SpinnerModel qtySpinnerModel = new SpinnerNumberModel(1, 1, 10, 1);
+		JSpinner qtySpinner = new JSpinner(qtySpinnerModel);
+		
+		JPanel qtyPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JLabel qtyLabel = new JLabel("주문 수량: ");
+		qtyPanel.add(qtyLabel);
+		qtyPanel.add(qtySpinner);
+		
+		JPanel optionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JLabel optionLabel = new JLabel("옵션: ");
+		optionPanel.add(optionLabel);
+		for(int i=0; i<chooseOption.length; i++) {
+			chooseOption[i] = new JCheckBox(optionList[i]);
+			optionPanel.add(chooseOption[i]);
+			chooseOption[i].addItemListener(new optionListener());
+		}
+		
+		JPanel priorityPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JLabel priorityLabel = new JLabel("배달 우선순위: ");
+		priorityPanel.add(priorityLabel);
+		for(int i=0; i<chooseDeliveryType.length; i++) {
+			chooseDeliveryType[i] = new JRadioButton(chooseDeliveryTypeList[i]);
+			priorityPanel.add(chooseDeliveryType[i]);
+			chooseDeliveryType[i].addItemListener(new priorityListener());
+		}
+		
+		JPanel memoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JLabel memoLabel = new JLabel("메모: ");
+		JTextField memoField = new JTextField();
+		memoPanel.add(memoLabel);
+		memoPanel.add(memoField);
+		
+		JPanel buttonPanel = new JPanel(new FlowLayout());
+		JButton orderButton = new JButton();
+		JButton resetButton = new JButton();
+		buttonPanel.add(orderButton);
+		buttonPanel.add(resetButton);
+		
+		infoPanel.add(selectedListLabel);
+		infoPanel.add(localOrderQty);
+		infoPanel.add(qtyPanel);
+		infoPanel.add(optionPanel);
+		infoPanel.add(priorityPanel);
+		infoPanel.add(memoPanel);
+		infoPanel.add(buttonPanel);
+		
+		
+		// 오른쪽 영역
+		JPanel statisticsPanel = new JPanel(new GridLayout(4, 1));
+		statisticsPanel.setBorder(BorderFactory.createTitledBorder("전체 주문 통계"));
+		
+		JLabel totalOrderLabel = new JLabel("전체 주문 수: 0건", SwingConstants.CENTER);
+		JLabel todayOrderLabel = new JLabel("오늘 목표 주문 수: 50건", SwingConstants.CENTER);
+		
+		JSlider todayOrder = new JSlider(10, 200, 50);
+		todayOrder.setMajorTickSpacing(1);
+		todayOrder.setPaintTicks(true);
+		todayOrder.setPaintLabels(true);
+		
+		statisticsPanel.add(totalOrderLabel);
+		statisticsPanel.add(todayOrderLabel);
+		statisticsPanel.add(todayOrder);
+		
+		c.add(choosePanel, BorderLayout.WEST);
+		c.add(infoPanel, BorderLayout.CENTER);
+		c.add(statisticsPanel, BorderLayout.EAST);
+		
+		setSize(900, 600);
+		setVisible(true);	
+	}
+	
+	class chooseListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+		int index = chooseList.getSelectedIndex();	
+		selectedListLabel.setText("가게 이름: " + store[index].getName()); 
+		}
+	}
+	
+	class optionListener implements ItemListener {
+		public void itemStateChanged(ItemEvent e) {
+			if(e.getStateChange() == ItemEvent.SELECTED) {
+				if(e.getItem() == chooseOption[0])
+					isSelected1 = true;
+				else if(e.getItem() == chooseOption[1])
+					isSelected2 = true;
+				else if(e.getItem() == chooseOption[2])
+					isSelected3 = true;
+			}
+			else {
+				if(e.getItem() == chooseOption[0])
+					isSelected1 = false;
+				else if(e.getItem() == chooseOption[1])
+					isSelected2 = false;
+				else if(e.getItem() == chooseOption[2])
+					isSelected3 = false;
+			}
+		}
+	}
+	
+	class priorityListener implements ItemListener {
+		public void itemStateChanged(ItemEvent e) {
+			for(int i=0; i<chooseDeliveryType.length; i++) {
+				if(chooseDeliveryType[i].isSelected()) {
+					prior = chooseDeliveryTypeList[i];
+				}
+			}
+		}
+	}
+	
+	public static void main(String[] args) {
+		new DeliveryManagerFrame();
+	}
+}

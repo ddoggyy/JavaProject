@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename compilation unit &apos;ex06_09.StringTokenizer.java&apos; to &apos;StringTokenizerEx.java&apos;&#x0D;&#x0A;- Original project: &apos;ex06_09&apos;&#x0D;&#x0A;- Original element: &apos;ex06_09.StringTokenizer.java&apos;&#x0D;&#x0A;- Renamed element: &apos;ex06_09.StringTokenizerEx.java&apos;" description="Rename compilation unit &apos;StringTokenizer.java&apos;" flags="2" id="org.eclipse.jdt.ui.rename.compilationunit" input="/src&lt;ex06_09{StringTokenizer.java" name="StringTokenizerEx.java" references="false" stamp="1760092300017" version="1.0"/>
+</session>

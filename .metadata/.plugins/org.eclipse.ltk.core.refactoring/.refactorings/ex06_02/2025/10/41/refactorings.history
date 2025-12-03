@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;ex06_02.ToStringEX&apos; to &apos;ToStringEx&apos;&#x0D;&#x0A;- Original project: &apos;ex06_02&apos;&#x0D;&#x0A;- Original element: &apos;ex06_02.ToStringEX&apos;&#x0D;&#x0A;- Renamed element: &apos;ex06_02.ToStringEx&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;ToStringEX&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;ex06_02{ToStringEX.java[ToStringEX" matchStrategy="1" name="ToStringEx" qualified="false" references="true" similarDeclarations="false" stamp="1760089801968" textual="false" version="1.0"/>
+</session>

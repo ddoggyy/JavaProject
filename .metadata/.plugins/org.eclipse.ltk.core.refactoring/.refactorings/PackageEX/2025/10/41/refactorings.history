@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;app.GoodCalac&apos; to &apos;GoodCalc&apos;&#x0D;&#x0A;- Original project: &apos;PackageEX&apos;&#x0D;&#x0A;- Original element: &apos;app.GoodCalac&apos;&#x0D;&#x0A;- Renamed element: &apos;app.GoodCalc&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;GoodCalac&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;app{GoodCalac.java[GoodCalac" matchStrategy="1" name="GoodCalc" qualified="false" references="true" similarDeclarations="false" stamp="1760089375508" textual="false" version="1.0"/>
+</session>
